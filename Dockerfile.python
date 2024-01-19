@@ -1,0 +1,23 @@
+# Используем базовый образ python:3.9-slim
+FROM python:3.9-slim
+
+# Установим рабочую директорию в контейнере
+WORKDIR /app
+
+# Копируем файлы проекта в рабочую директорию
+COPY . /app
+
+# Установим зависимости из файла requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Определяем переменные среды для подключения к базе данных
+ENV DB_HOST=new-mysql-db \
+    DB_USER=app \
+    DB_PASSWORD=very_strong \
+    DB_NAME=example
+
+# Открываем порт 5000
+EXPOSE 5000
+
+# Запускаем приложение
+CMD ["python", "main.py"]
