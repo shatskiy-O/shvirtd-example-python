@@ -10,10 +10,12 @@ services:
         ipv4_address: 172.20.0.5
     restart: always
     environment:
-      DB_HOST: db
-      DB_USER: app
-      DB_PASSWORD: very_strong
-      DB_NAME: example
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+    ports:
+      - "8091:5000"
 
   db:
     image: mysql:8
@@ -22,14 +24,15 @@ services:
         ipv4_address: 172.20.0.10
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: very_strong
-      MYSQL_DATABASE: example
-      MYSQL_USER: app
-      MYSQL_PASSWORD: very_strong
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
 
 networks:
   backend:
     driver: bridge
     ipam:
-     config:
-       - subnet: 172.20.0.0/16
+      config:
+        - subnet: 172.20.0.0/16
+
